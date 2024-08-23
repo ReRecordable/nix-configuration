@@ -1,0 +1,3 @@
+# ReRecordable's NixOS Configurations
+## please for the love of god dont copy these
+these are my CONFIGURATIONS for my nixOS systems.,,.., copy if you DARE....
