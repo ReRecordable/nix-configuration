@@ -8,23 +8,25 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./cb_aud.nix
+      ./chromebook_audio.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.devices = [ "nodev" ];
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.efiSysMountPoint = "/efi";
+  boot.loader.grub = {
+    enable = true;
+    devices = [ "nodev" ];
+    efiSupport = true;
+  };
+  
   boot.loader.efi.canTouchEfiVariables = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  boot.loader.efi.efiSysMountPoint="/efi";
   networking.hostName = "100e-nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/New_York";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -40,9 +42,9 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.budgie.enable=true;
 
-  
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -52,38 +54,29 @@
   # services.printing.enable = true;
 
   # Enable sound.
-   hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = true;
   # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
+  #services.pipewire = {
+  #  enable = true;
+  #  pulse.enable = true;
+  #};
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-  # };
-  users.users.admin = {
+  users.users.testacc = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
   };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-   environment.systemPackages = with pkgs; [
-     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     git
-     alsa-ucm-conf
-     nixpkgs-fmt
-   ];
- 
+  environment.systemPackages = with pkgs; [
+    neovim
+    git
+    firefox
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -125,5 +118,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
+
 }
+
