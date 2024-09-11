@@ -37,8 +37,7 @@
         ./Devices/valveSteamDeck/configuration.nix
       ];
      };
-
-     # Tower configuration
+     ## Tower configuration
      nixosConfigurations.thinkcentre-nixos = nixpkgs.lib.nixosSystem {
        system = "x86_64-linux";
        specialArgs = { inherit inputs; };
@@ -46,11 +45,19 @@
        ./configuration.nix
        ];
      };
-     nixosConfigurations."100e-nixos" = nixpkgs.lib.nixosSystem {
-       system = "x86_64-linux";
+     #nixosConfigurations."100e-nixos" = nixpkgs.lib.nixosSystem {
+     #  system = "x86_64-linux";
+     #  specialArgs = { inherit inputs; };
+     #  modules = [
+     #  ./Devices/lenovo100eChromebook/configuration.nix
+     #  ];
+     #};
+     ## T500 configuration
+     nixosConfigurations."t500nixos" = nixpkgs.lib.nixosSystem {
+       system = "x86_64-linux"
        specialArgs = { inherit inputs; };
        modules = [
-       ./Devices/lenovo100eChromebook/configuration.nix
+       ./Devices/lenovoT500ThinkPad/configuration.nix
        ];
      };
   };
