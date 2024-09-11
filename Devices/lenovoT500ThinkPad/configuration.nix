@@ -8,25 +8,24 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./chromebook_audio.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.grub = {
-    enable = true;
-    devices = [ "nodev" ];
-    efiSupport = true;
-  };
-  
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint="/efi";
-  networking.hostName = "100e-nixos"; # Define your hostname.
+  # Use the GRUB 2 boot loader.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.efiInstallAsRemovable = true;
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # Define on which hard drive you want to install Grub.
+  # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+
+  networking.hostName = "t500nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  # time.timeZone = "Europe/Amsterdam";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -42,9 +41,9 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.desktopManager.budgie.enable=true;
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];  
+  services.xserver.desktopManager.xfce.enable = true;
+  programs.firefox.enable = true;
+  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -54,29 +53,38 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.enable = true;
   # OR
-  #services.pipewire = {
-  #  enable = true;
-  #  pulse.enable = true;
-  #};
-
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+  };
+  hardware.bluetooth.enable = true;
+  services.fprintd.enable = true;
+  #services.fprintd.tod.enable = true;
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.testacc = {
+  users.users.user = {
     isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [ ];
   };
-
+  users.users.root.password = "root";
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
+    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    blueman
+    niri
+    wofi
+    waybar
     git
-    firefox
+    libreoffice
   ];
-
+  nixpkgs.config.allowUnfree = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
