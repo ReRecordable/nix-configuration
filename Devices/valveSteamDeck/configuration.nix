@@ -119,7 +119,7 @@
     gruvbox-gtk-theme
     cloudflare-warp
   ];
-   systemd.user.services.cloudflare-warp.enable = true;
+   systemd.user.services.warp-svc.enable = true;
   services.flatpak.enable = true;
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
