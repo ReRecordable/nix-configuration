@@ -43,7 +43,7 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
   programs.firefox.enable = true;
-  
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
