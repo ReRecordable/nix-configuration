@@ -117,8 +117,9 @@
     gnomeExtensions.dash-to-panel
     gruvbox-dark-gtk
     gruvbox-gtk-theme
+    cloudflare-warp
   ];
-
+   systemd.user.services.cloudflare-warp.enable = true;
   services.flatpak.enable = true;
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
