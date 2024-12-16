@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, jovian, ... }:
 
 {
   imports =
@@ -11,16 +11,20 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub = { 
+  enable = true;
+  efiSupport = true;
+  devices = [ "nodev" ];
+  };
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # networking.hostName = "nixos"; # Define your hostname.
+  boot.loader.efi.efiSysMountPoint = "/efi";
+  networking.hostName = "nix-deck"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/New_York";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -36,10 +40,14 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
+  jovian.steam.enable = true;
+  jovian.steam.autoStart = true;
+  jovian.steam.desktopSession = "gnome";
+  jovian.devices.steamdeck.enable = true;
+  jovian.steam.user = "pilot";
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.startx.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   
 
@@ -62,14 +70,14 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  users.users.pilot = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   #   packages = with pkgs; [
   #     firefox
   #     tree
   #   ];
-  # };
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -119,7 +127,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 
 }
 
