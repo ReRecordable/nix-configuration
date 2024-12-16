@@ -7,11 +7,11 @@
     jovian.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {self, nixpkgs, ... }@inputs: { 
+  outputs = {self, nixpkgs, jovian, ... }@inputs: { 
     nixosConfigurations = { 
       "nix-deck" = nixpkgs.lib.nixosSystem {
          system = "x86_64-linux";
-         specialArgs = { inheret inputs; };
+         specialArgs = { inherit inputs; };
          modules = [ ./configuration.nix jovian.nixosModules.jovian ];
       };
     };
