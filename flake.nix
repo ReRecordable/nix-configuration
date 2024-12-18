@@ -12,8 +12,12 @@
       "nix-deck" = nixpkgs.lib.nixosSystem {
          system = "x86_64-linux";
          specialArgs = { inherit inputs; };
-         modules = [ ./configuration.nix jovian.nixosModules.jovian ];
+         modules = [ ./dev/deck/configuration.nix jovian.nixosModules.jovian ];
       };
+      "5590" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+	specialArgs = { inherit inputs; };
+	modules = [ ./dev/5590/configuration.nix ];
     };
   };
 }
