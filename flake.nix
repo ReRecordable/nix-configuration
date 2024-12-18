@@ -18,6 +18,7 @@
         system = "x86_64-linux";
 	specialArgs = { inherit inputs; };
 	modules = [ ./dev/5590/configuration.nix ];
+      };
     };
   };
 }
