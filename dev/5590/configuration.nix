@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       # ../../home.nix
       #modules.niri
+      ../../con/plymouth.nix
   ];
 
   # Enable support for those aetherial nix flakes.
@@ -17,21 +18,6 @@
 
   # Various settings for the boot process.
   boot = {
-    # Enable the Plymouth boot screen.
-    plymouth = {
-      enable = true;
-      theme = "bgrt";
-    };
-    # Various config required for Plymouth
-    initrd.verbose = false;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "loglevel=3"
-      "rd.systemd.show_status=false"
-      "udev.log_priority=3"
-    ];
     kernelModules = [
       "i915"
     ];
@@ -91,7 +77,8 @@
   services.xserver.xkb.options = "eurosign:e,caps:escape";
  
   # Define users & their passwords for the system.  users.users = {
-      # Personal Account.
+  users.users = {
+  # Personal Account.
     samantha = {
       description = "To whom which will not be named";
       isNormalUser = true;
